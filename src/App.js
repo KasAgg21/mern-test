@@ -1,24 +1,35 @@
-import logo from './logo.svg';
-import './App.css';
+// src/App.js
+import React, { useEffect } from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import setAuthToken from './utils/setAuthToken';
+import Login from './components/Login';
+import Dashboard from './components/Dashboard';
+import EmployeeList from './components/EmployeeList';
+import CreateEmployee from './components/CreateEmployee';
+import EditEmployee from './components/EditEmployee';
+import Navbar from './components/Navbar';
 
 function App() {
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    if (token) {
+      setAuthToken(token);
+    }
+  }, []);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Router>
+      <Navbar />
+      <div className="container">
+        <Routes>
+          <Route path="/" element={<Login />} />
+          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/employees" element={<EmployeeList />} />
+          <Route path="/create-employee" element={<CreateEmployee />} />
+          <Route path="/edit-employee/:id" element={<EditEmployee />} />
+        </Routes>
+      </div>
+    </Router>
   );
 }
 
